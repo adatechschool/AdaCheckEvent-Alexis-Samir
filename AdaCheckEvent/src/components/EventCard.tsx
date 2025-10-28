@@ -24,7 +24,7 @@ export function EventCard({ ObjetEvent, style, }: Props) {
                 <SeeMoreButton OnClick={ToggleEventPopup} />
             </div>
             {isEventPopupOpen ? (
-                <EventPopup Event={event} />
+                <EventPopup Event={ObjetEvent} onClose={ToggleEventPopup} />
             )
                 :
                 null

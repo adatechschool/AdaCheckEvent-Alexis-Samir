@@ -1,14 +1,16 @@
-import , { type CSSProperties } from 'react';
+import { type CSSProperties } from 'react';
 
 
 type Props = {
     style? : CSSProperties
+    inputValue: string,
+    setInputValue: Dispatch<SetStateAction<string>>
 };
 
-export function SearchBar({style}: Props) {
+export function SearchBar({style, inputValue, setInputValue}: Props) {
   return (
     <div className="search-bar" style={{...styles.container, ...style}}>
-      <input type="text" placeholder="Search..." />
+      <input type="text" placeholder="Search..." onChange={() => setInputValue}/>
       <button>Search</button>
     </div>
   );
