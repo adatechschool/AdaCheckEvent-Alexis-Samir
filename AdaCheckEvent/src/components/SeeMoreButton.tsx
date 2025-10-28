@@ -1,14 +1,14 @@
-import React, { CSSProperties } from 'react';
-import type, {event} from '../constants/Event';
+import { type CSSProperties } from 'react';
+
 
 type Props = {
-    event: event;
     style?: CSSProperties;
+    OnClick: () => void
 }
-export function SeeMoreButton({ event, style }: Props) {
+export function SeeMoreButton({style, OnClick }: Props) {
     return (
         <div style={{...styles.container, ...style}}> 
-        <button onClick={}>SEE MORE</button> 
+        <button onClick={() => {OnClick()}}>SEE MORE</button> 
         </div>
         )
     }
@@ -20,5 +20,5 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: '16px',
-    }
-} as CSSProperties;
+    } as CSSProperties
+} 

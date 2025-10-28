@@ -40,21 +40,25 @@ function App() {
     } catch (error) {
       console.error('Error fetching events:', error)
     }
+  }
 
     useEffect(() => {
       display()
-    }, [])
-
-
-
-  }
+    }, []
+  )
+  
   return (
     <>
     {console.log(listEvent)}
+      {
+      listEvent.map((event) => 
+        <div>
+            <EventCard key={event.id} ObjetEvent={event} />
+        </div>
+      )
+    }
 
       <button onClick={() => display()}> Fetch API</button>
-
-
     </>
   )
 }
