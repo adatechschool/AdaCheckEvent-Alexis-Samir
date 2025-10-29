@@ -1,12 +1,13 @@
 import {type CSSProperties} from 'react';
+import {useInputValue} from '../context/InputValueContext';
 
 
 type Props = {
   style?: CSSProperties;
-  setInputValue: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export function SearchBar({style, setInputValue}: Props) {
+export function SearchBar({style}: Props) {
+  const {setInputValue} = useInputValue()
   return (
     <div className="search-bar" style={{...styles.container, ...style}}>
       <div style={{...styles.inputWrapper}}>
