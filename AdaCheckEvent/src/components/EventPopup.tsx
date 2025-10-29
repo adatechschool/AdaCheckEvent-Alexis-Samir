@@ -17,6 +17,18 @@ type Props = {
     onClose?: () => void;
 }
 
+// Utility functions
+function formatDate(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleString('fr-FR', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
 export function EventPopup({Event, style, onClose}: Props) {
 
     return (
@@ -25,18 +37,19 @@ export function EventPopup({Event, style, onClose}: Props) {
         
         <div style={styles.overlay} onClick={onClose}>
             <div style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
-                <button style={styles.closeButton} onClick={onClose}>×</button>
+                <button style={styles.closeButton} onClick={onClose}>X</button>
                 <h1>{Event.title}</h1>
                 <img src={Event.cover_url} alt={Event.cover_alt || Event.title} style={styles.image}/>              
                 <div 
                     style={styles.description}
                     dangerouslySetInnerHTML={{ __html: sanitizeHtml(Event.description) }}
                 />
-                <p><strong>Date de début :</strong> {Event.date_start}</p>
+                <p><strong>Date de début :</strong> {formatDate(Event.date_start)}</p>
                 <p><strong>Date de fin :</strong> {Event.date_end}</p>
                 <p><strong>Addresse :</strong> {Event.address_street}, {Event.address_zipcode}, {Event.address_city}</p>
                 <p><strong>Téléphone :</strong> {Event.contact_phone}</p>
                 <p><strong>Mail :</strong> {Event.contact_mail}</p>
+                <button style={{backgroundColor: '#f00'}} onClick={onClose}>Fermer</button>
             </div>
         </div>
         </>
@@ -60,22 +73,22 @@ const styles = {
         border: '1px solid black',
         padding: '20px',
         position: 'relative' as 'relative',
-        width: '200vh',
-        maxHeight: '100vh',
+        width: '120vh',
+        maxHeight: '80vh',
         backgroundColor: 'white',
         boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '8px',
+        borderRadius: '10px',
         overflowY: 'auto',
     } as CSSProperties,
     closeButton: {
         position: 'absolute' as 'absolute',
         top: '10px',
         right: '15px',
-        background: 'none',
+        background: 'red',
         border: 'none',
         fontSize: '24px',
         cursor: 'pointer',
-        color: '#666',
+        color: '#f4f0f0ff',
         padding: '0',
         width: '30px',
         height: '30px',
@@ -85,7 +98,7 @@ const styles = {
     } as CSSProperties,
     image: {
         width: '30%',
-        maxHeight: '100%',
+        maxHeight: '90%',
         objectFit: 'cover' as 'cover',
         borderRadius: '10px',
         marginBottom: '10px',
@@ -94,5 +107,6 @@ const styles = {
         lineHeight: '1.6',
         marginBottom: '15px',
         color: '#333',
+        alignContent: 'left',
     } as CSSProperties,
 }
