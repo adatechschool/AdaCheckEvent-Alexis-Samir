@@ -52,7 +52,12 @@ function App() {
   return (
     <>
     {console.log(listEvent)}
-    <SearchBar setInputValue={setInputValue}/>
+    <div style={{padding: '16px', maxWidth: '100%'}}>
+      <h1 style={{color: 'white', textAlign: 'center', margin: '0 0 20px 0', fontSize: '1.8em', fontWeight: '700', textShadow: '2px 2px 4px rgba(0,0,0,0.2)'}}>
+        🗼 Événements à Paris
+      </h1>
+      <SearchBar setInputValue={setInputValue}/>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px', maxWidth: '1200px', margin: '20px auto 0', padding: '0 16px'}}>
       {
       listEvent.filter((event) => {
         console.log(inputValue);
@@ -66,8 +71,11 @@ function App() {
         </div>
       )
     }
-
-      <button onClick={() => display()}> Fetch API</button>
+      </div>
+      <div style={{display: 'flex', justifyContent: 'center', margin: '24px 0'}}>
+        <button onClick={() => display()}> 🔄 Recharger les événements</button>
+      </div>
+    </div>
     </>
   )
 }

@@ -17,17 +17,20 @@ export function SeeMoreButton({style, OnClick }: Props) {
 const styles = {
     container: {
         display: 'flex',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
-        marginTop: '16px',
+        marginTop: '8px',
     } as CSSProperties,
     button: {
         padding: '10px 20px', 
-        backgroundColor: '#000',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         color: '#fff',
         border: 'none',
-        borderRadius: '8px',
+        borderRadius: '12px',
         cursor: 'pointer',
-        transition: 'background-color 0.3s',
+        fontSize: '0.9em',
+        fontWeight: '600',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
     } as CSSProperties,
 }

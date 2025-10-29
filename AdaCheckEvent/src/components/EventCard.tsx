@@ -17,10 +17,10 @@ export function EventCard({ ObjetEvent, style, }: Props) {
 
     return (
         <div style={{ ...styles.container, ...style }}>
-            <img src={ObjetEvent.cover_url} alt={ObjetEvent.cover_alt} style={{ height: '200px', width: '200px' }} />
+            <img src={ObjetEvent.cover_url} alt={ObjetEvent.cover_alt} style={styles.image} />
             <div style={styles.informations}>
-                <h2>{ObjetEvent.title}</h2>
-                <p>{ObjetEvent.lead_texte}</p>
+                <h2 style={styles.title}>{ObjetEvent.title}</h2>
+                <p style={styles.description}>{ObjetEvent.lead_texte}</p>
                 <SeeMoreButton OnClick={ToggleEventPopup} />
             </div>
             {isEventPopupOpen ? (
@@ -37,21 +37,49 @@ const styles = {
     container: {
         display: 'flex',
         flex: 1,
-        flexDirection: "row",
-        border: "1px solid black",
-        borderRadius: "8px",
-        padding: "16px",
-        margin: "16px",
-        minWidth: '200px',
-        maxWidth: '500px',
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-        backgroundColor: "#f9f9f9",
+        flexDirection: "column",
+        border: "none",
+        borderRadius: "16px",
+        padding: "0",
+        margin: "0",
+        minWidth: '280px',
+        maxWidth: '100%',
+        width: '100%',
+        height: '100%',
+        boxShadow: "0 8px 24px rgba(0, 0, 0, 0.15)",
+        backgroundColor: "#ffffff",
         color: "#333",
-        gap: "16px"
+        overflow: 'hidden',
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease'
+    } as CSSProperties,
+    image: {
+        width: '100%',
+        height: '200px',
+        objectFit: 'cover',
+        borderRadius: '0',
+        flexShrink: 0
     } as CSSProperties,
     informations: {
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center"
-    } as CSSProperties
+        justifyContent: "space-between",
+        padding: "16px",
+        gap: "12px",
+        flex: 1
+    } as CSSProperties,
+    description: {
+        display: '-webkit-box',
+        WebkitLineClamp: 3,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxHeight: '80px',
+        lineHeight: '1.4em'
+    } as CSSProperties,
+    title: {
+        fontSize: '1.2em',
+        margin: '0',
+        fontWeight: '700',
+        color: '#222'
+    } as CSSProperties,
 } 

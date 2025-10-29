@@ -24,27 +24,35 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     gap: '8px',
-    padding: '8px',
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    backgroundColor: '#f9f9f9'
+    padding: '12px 16px',
+    border: 'none',
+    borderRadius: '16px',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
+    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+    maxWidth: '100%',
+    margin: '0 auto'
   } as CSSProperties,
   inputSections: {
-    border: '1px solid #ccc',
-    borderRadius: '4px',
-    padding: '4px',
+    border: 'none',
+    borderRadius: '8px',
+    padding: '8px',
     flex: 1,
-    height: '25px'
+    height: '32px',
+    fontSize: '16px',
+    backgroundColor: 'transparent',
+    outline: 'none',
+    color: '#2c3e50'
   } as CSSProperties,
   inputWrapper : {
     display: 'flex', 
     alignItems: 'center', 
     width: '100%', 
-    gap: '4px'
+    gap: '12px'
   } as CSSProperties,
   icon: {
-    width: '20px',
-    height: '20px',
-    color: '#666'
+    width: '24px',
+    height: '24px',
+    color: '#667eea',
+    flexShrink: 0
   } as CSSProperties,
 };

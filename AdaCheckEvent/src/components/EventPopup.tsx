@@ -39,7 +39,7 @@ export function EventPopup({Event, style, onClose}: Props) {
 
             <div style={styles.overlay} onClick={onClose}>
                 <div style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
-                    <button style={styles.closeButton} onClick={onClose}>X</button>
+                    <button style={styles.closeButton} onClick={onClose}>✕</button>
                     <h1>{Event.title}</h1>
                     <img src={Event.cover_url} alt={Event.cover_alt || Event.title} style={styles.image} />
                     <div
@@ -71,7 +71,7 @@ export function EventPopup({Event, style, onClose}: Props) {
                         :
                         null
                     }
-                    <button style={{backgroundColor: '#f00'}} onClick={onClose}>Fermer</button>
+                    <button style={styles.actionButton} onClick={onClose}>Fermer</button>
                 </div>
             </div>
         </>
@@ -85,50 +85,70 @@ const styles = {
         left: 0,
         right: 0,
         bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.7)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         zIndex: 1000,
+        padding: '16px',
     } as CSSProperties,
     container: {
-        border: '1px solid black',
-        padding: '20px',
+        border: 'none',
+        padding: '24px',
         position: 'relative' as 'relative',
-        width: '120vh',
-        maxHeight: '80vh',
+        width: '100%',
+        maxWidth: '600px',
+        maxHeight: '90vh',
         backgroundColor: 'white',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '10px',
-        overflowY: 'auto',
+        boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+        borderRadius: '20px',
+        overflowY: 'auto' as 'auto',
     } as CSSProperties,
     closeButton: {
         position: 'absolute' as 'absolute',
-        top: '10px',
-        right: '15px',
-        background: 'red',
+        top: '16px',
+        right: '16px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
         border: 'none',
-        fontSize: '24px',
+        fontSize: '20px',
         cursor: 'pointer',
-        color: '#f4f0f0ff',
+        color: '#ffffff',
         padding: '0',
-        width: '30px',
-        height: '30px',
+        width: '36px',
+        height: '36px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: '50%',
+        fontWeight: 'bold',
+        boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)',
+        transition: 'all 0.3s ease',
     } as CSSProperties,
     image: {
-        width: '30%',
-        maxHeight: '90%',
+        width: '100%',
+        maxHeight: '300px',
         objectFit: 'cover' as 'cover',
-        borderRadius: '10px',
-        marginBottom: '10px',
+        borderRadius: '12px',
+        marginBottom: '16px',
     } as CSSProperties,
     description: {
         lineHeight: '1.6',
-        marginBottom: '15px',
-        color: '#333',
-        alignContent: 'left',
+        marginBottom: '20px',
+        color: '#555',
+        fontSize: '0.95em',
+    } as CSSProperties,
+    actionButton: {
+        width: '100%',
+        marginTop: '16px',
+        padding: '12px',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        color: 'white',
+        border: 'none',
+        borderRadius: '12px',
+        fontSize: '1em',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'all 0.3s ease',
+        boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
     } as CSSProperties,
 }
