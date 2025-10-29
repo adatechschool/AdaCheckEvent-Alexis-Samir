@@ -16,6 +16,7 @@ export type Event = {
     date_end: string | null; // Date de fin de l'événement
 
     // lieu et coordonnées
+    address_name: string | null; // Nom du lieu de l'événement
     address_street: string | null; // Lieu de l'événement
     address_zipcode: string | null; // Code postal du lieu de l'événement
     address_city: string | null; // Ville du lieu de l'événement

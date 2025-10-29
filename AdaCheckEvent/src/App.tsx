@@ -23,6 +23,7 @@ function App() {
         cover_alt: event.cover_alt,
         date_start: event.date_start,
         date_end: event.date_end,
+        address_name: event.address_name,
         address_street: event.address_street,
         address_zipcode: event.address_zipcode,
         address_city: event.address_city,
@@ -51,9 +52,10 @@ function App() {
   return (
     <>
     {console.log(listEvent)}
-    <SearchBar inputValue={inputValue} setInputValue={setInputValue}/>
+    <SearchBar setInputValue={setInputValue}/>
       {
       listEvent.filter((event) => {
+        console.log(inputValue);
         if (inputValue) { 
           return event.title.toLowerCase().includes(inputValue.toLowerCase()) || event.description.toLowerCase().includes(inputValue.toLowerCase())
         }

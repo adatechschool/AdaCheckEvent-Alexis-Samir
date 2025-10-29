@@ -1,5 +1,5 @@
-import type { Event } from '../constants/Event';
-import React, { type CSSProperties } from 'react';
+import type {Event} from '../constants/Event';
+import {type CSSProperties} from 'react';
 
 // Fonction utilitaire pour nettoyer le HTML (optionnel, pour plus de sécurité)
 const sanitizeHtml = (html: string): string => {
@@ -13,7 +13,7 @@ const sanitizeHtml = (html: string): string => {
 
 type Props = {
     Event: Event;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
     onClose?: () => void;
 }
 
@@ -26,32 +26,54 @@ function formatDate(dateString: string) {
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
-    });
+    })
+
+        ;
 }
 
 export function EventPopup({Event, style, onClose}: Props) {
 
     return (
         <>
-        {console.log("Popup Opened for event: ", Event.title)}
-        
-        <div style={styles.overlay} onClick={onClose}>
-            <div style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
-                <button style={styles.closeButton} onClick={onClose}>X</button>
-                <h1>{Event.title}</h1>
-                <img src={Event.cover_url} alt={Event.cover_alt || Event.title} style={styles.image}/>              
-                <div 
-                    style={styles.description}
-                    dangerouslySetInnerHTML={{ __html: sanitizeHtml(Event.description) }}
-                />
-                <p><strong>Date de début :</strong> {formatDate(Event.date_start)}</p>
-                <p><strong>Date de fin :</strong> {Event.date_end}</p>
-                <p><strong>Addresse :</strong> {Event.address_street}, {Event.address_zipcode}, {Event.address_city}</p>
-                <p><strong>Téléphone :</strong> {Event.contact_phone}</p>
-                <p><strong>Mail :</strong> {Event.contact_mail}</p>
-                <button style={{backgroundColor: '#f00'}} onClick={onClose}>Fermer</button>
+            {console.log("Popup Opened for event: ", Event.title)}
+
+            <div style={styles.overlay} onClick={onClose}>
+                <div style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
+                    <button style={styles.closeButton} onClick={onClose}>X</button>
+                    <h1>{Event.title}</h1>
+                    <img src={Event.cover_url} alt={Event.cover_alt || Event.title} style={styles.image} />
+                    <div
+                        style={styles.description}
+                        dangerouslySetInnerHTML={{__html: sanitizeHtml(Event.description)}}
+                    />
+                    {Event.date_start ? (
+                        <p><strong>Date de début :</strong> {formatDate(Event.date_start)}</p>
+                    )
+                        :
+                        null
+                    }
+                    {Event.date_end ? (
+                        <p><strong>Date de fin :</strong> {formatDate(Event.date_end)}</p>
+                    )
+                        :
+                        null
+                    }
+                    <p><strong>Addresse :</strong> {Event.address_name ? Event.address_name + ', ' : ''} {Event.address_street}, {Event.address_zipcode}, {Event.address_city}</p>
+                    {Event.contact_phone ? (
+                        <p><strong>Téléphone :</strong> {formatDate(Event.contact_phone)}</p>
+                    )
+                        :
+                        null
+                    }
+                     {Event.contact_mail ? (
+                        <p><strong>Mail :</strong> {formatDate(Event.contact_mail)}</p>
+                    )
+                        :
+                        null
+                    }
+                    <button style={{backgroundColor: '#f00'}} onClick={onClose}>Fermer</button>
+                </div>
             </div>
-        </div>
         </>
     )
 }
