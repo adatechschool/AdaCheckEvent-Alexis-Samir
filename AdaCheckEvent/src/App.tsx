@@ -7,10 +7,19 @@ import './App.css'
 function App() {
   const [listEvent, setListEvent] = useState<Event[]>([])
   const [inputValue, setInputValue] = useState<string>('')
+  const [offset, setOffset] = useState<number>(0)
 
-  const display = async () => {
+  // Function 1: Clear all events from the list
+  const clearEvents = () => {
+    console.log("Clearing all events...");
+    setListEvent([]);
+    setOffset(0); // Reset offset when clearing
+  }
+
+  // Function 2: Fetch and ADD the next 50 events to the existing list
+  const loadMoreEvents = async () => {
     try {
-      const response = await fetch('https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/que-faire-a-paris-/records?limit=20')
+      const response = await fetch(`https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/que-faire-a-paris-/records?limit=50&offset=${offset}`)
       const data = await response.json()
       console.log(data.results);
       
@@ -27,7 +36,7 @@ function App() {
         address_street: event.address_street,
         address_zipcode: event.address_zipcode,
         address_city: event.address_city,
-        text: event.locations[0]?.text || null,
+        text: event.locations?.[0]?.text || null,
         lat_lon: event.lat_lon ? [event.lat_lon.lat, event.lat_lon.lon] : [null, null],
         contact_url: event.contact_url || null,
         contact_phone: event.contact_phone || null,
@@ -37,15 +46,22 @@ function App() {
         url: event.url
       }));
       
-      setListEvent(eventsParis);
-      console.log("Events loaded:", eventsParis);
+      // Filter out events that already exist (to prevent duplicates)
+      setListEvent(prevEvents => {
+        const existingIds = new Set(prevEvents.map(e => e.id));
+        const newEvents = eventsParis.filter(event => !existingIds.has(event.id));
+        console.log(`Adding ${newEvents.length} new events (${eventsParis.length - newEvents.length} duplicates filtered)`);
+        return [...prevEvents, ...newEvents];
+      });
+      setOffset(prevOffset => prevOffset + 50); // Increment offset for next load
+      console.log('This is the offset : ' + offset);
     } catch (error) {
       console.error('Error fetching events:', error)
     }
   }
 
     useEffect(() => {
-      display()
+      loadMoreEvents()
     }, []
   )
   
@@ -57,7 +73,7 @@ function App() {
         🗼 Événements à Paris
       </h1>
       <SearchBar setInputValue={setInputValue}/>
-      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px', maxWidth: '1200px', margin: '20px auto 0', padding: '0 16px'}}>
+      <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px', margin: '20px auto 0', padding: '0 16px'}}>
       {
       listEvent.filter((event) => {
         console.log(inputValue);
@@ -72,8 +88,8 @@ function App() {
       )
     }
       </div>
-      <div style={{display: 'flex', justifyContent: 'center', margin: '24px 0'}}>
-        <button onClick={() => display()}> 🔄 Recharger les événements</button>
+      <div style={{display: 'flex', justifyContent: 'center', gap: '16px', margin: '24px 0', flexWrap: 'wrap'}}>
+        <button onClick={loadMoreEvents}>➕ Charger plus d'événements</button>
       </div>
     </div>
     </>
