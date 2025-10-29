@@ -9,19 +9,11 @@ function App() {
   const [inputValue, setInputValue] = useState<string>('')
   const [offset, setOffset] = useState<number>(0)
 
-  // Function 1: Clear all events from the list
-  const clearEvents = () => {
-    console.log("Clearing all events...");
-    setListEvent([]);
-    setOffset(0); // Reset offset when clearing
-  }
-
-  // Function 2: Fetch and ADD the next 50 events to the existing list
+  // Fetch and ADD the next 50 events to the existing list
   const loadMoreEvents = async () => {
     try {
       const response = await fetch(`https://opendata.paris.fr/api/explore/v2.1/catalog/datasets/que-faire-a-paris-/records?limit=50&offset=${offset}`)
       const data = await response.json()
-      console.log(data.results);
       
       const eventsParis: Event[] = data.results.map((event: APIResponse) => ({
         id: event.id,
@@ -54,7 +46,6 @@ function App() {
         return [...prevEvents, ...newEvents];
       });
       setOffset(prevOffset => prevOffset + 50); // Increment offset for next load
-      console.log('This is the offset : ' + offset);
     } catch (error) {
       console.error('Error fetching events:', error)
     }
@@ -67,7 +58,6 @@ function App() {
   
   return (
     <>
-    {console.log(listEvent)}
     <div style={{padding: '16px', maxWidth: '100%'}}>
       <h1 style={{color: 'white', textAlign: 'center', margin: '0 0 20px 0', fontSize: '1.8em', fontWeight: '700', textShadow: '2px 2px 4px rgba(0,0,0,0.2)'}}>
         🗼 Événements à Paris
@@ -76,9 +66,41 @@ function App() {
       <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px', margin: '20px auto 0', padding: '0 16px'}}>
       {
       listEvent.filter((event) => {
-        console.log(inputValue);
-        if (inputValue) { 
-          return event.title.toLowerCase().includes(inputValue.toLowerCase()) || event.description.toLowerCase().includes(inputValue.toLowerCase())
+        if (inputValue) {
+          const searchLower = inputValue.toLowerCase().trim();
+          
+          // Check for "Paris X" or "Paris XX" pattern (can be anywhere in the search)
+          const parisDistrictMatch = searchLower.match(/paris\s+(\d{1,2})/);
+          let matchesLocation = true; // By default, no location filter
+          let remainingSearch = searchLower;
+          
+          if (parisDistrictMatch) {
+            const district = parisDistrictMatch[1].padStart(2, '0');
+            const expectedZipcode = `750${district}`;
+            matchesLocation = event.address_zipcode === expectedZipcode;
+            
+            // Remove the "Paris X" part from the search to get remaining keywords
+            remainingSearch = searchLower.replace(/paris\s+\d{1,2}/, '').trim();
+            console.log('Searching for district:', district, 'Expected zipcode:', expectedZipcode, 'Remaining keywords:', remainingSearch);
+          }
+          
+          // If there are remaining keywords, search in title, description, etc.
+          let matchesKeywords = true;
+          if (remainingSearch) {
+            
+            // Split the search into individual words
+            const keywords = remainingSearch.split(/\s+/).filter(word => word.length > 0);
+            console.log('Keywords split:', keywords);
+            
+            // Check if ALL keywords are found in at least one of the fields
+            matchesKeywords = keywords.every(keyword => {
+              const eventText = `${event.title} ${event.description} ${event.lead_texte} ${event.address_city || ''}`.toLowerCase();
+              return eventText.includes(keyword);
+            });
+          }
+          
+          // Both conditions must be true
+          return matchesLocation && matchesKeywords;
         }
         return true // Afficher tous les événements si pas de recherche
       }).map((event) => 
