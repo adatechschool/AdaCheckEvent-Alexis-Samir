@@ -14,7 +14,7 @@ import {APIProvider, useAPI} from './context/APIContext'
 import './App.css'
 
 function AppContent() {
-  const [inputValue, setInputValue] = useState<string>('')
+  const [inputValue, setInputValue] = useState<string>('') // State pour Récupérer la valeur de recherche
   const { listEvent, loadMoreEvents } = useAPI()
 
   return (

@@ -31,7 +31,7 @@ export function APIProvider({ children }: APIProviderProps) {
                 title: event.title,
                 description: event.description,
                 lead_texte: event.lead_text,
-                cover_url: event.cover_url,
+                cover_url: event.cover_url ? event.cover_url.split('?')[0] : event.cover_url,
                 cover_alt: event.cover_alt,
                 date_start: event.date_start,
                 date_end: event.date_end,

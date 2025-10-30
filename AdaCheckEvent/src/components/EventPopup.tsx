@@ -26,9 +26,7 @@ function formatDate(dateString: string) {
         year: 'numeric',
         hour: '2-digit',
         minute: '2-digit'
-    })
-
-        ;
+    });
 }
 
 export function EventPopup({Event, style, onClose}: Props) {
@@ -58,15 +56,32 @@ export function EventPopup({Event, style, onClose}: Props) {
                         :
                         null
                     }
-                    <p><strong>Addresse :</strong> {Event.address_name ? Event.address_name + ', ' : ''} {Event.address_street}, {Event.address_zipcode}, {Event.address_city}</p>
+                    <p><strong>Addresse :</strong> {
+                        Event.address_name ||
+                            Event.address_street ||
+                            Event.address_zipcode ||
+                            Event.address_city ? (
+                            <>
+                                {Event.address_name ? `${Event.address_name} ` : ''}
+                                {Event.address_street ? `, ${Event.address_street} ` : ''}
+                                {Event.address_zipcode ? `, ${Event.address_zipcode} ` : ''}
+                                {Event.address_city ? `, ${Event.address_city} ` : ''}
+                            </>
+                        )
+                            :
+                            Event.text ? Event.text : null
+                    }
+
+                    </p>
+
                     {Event.contact_phone ? (
-                        <p><strong>Téléphone :</strong> {formatDate(Event.contact_phone)}</p>
+                        <p><strong>Téléphone :</strong> {Event.contact_phone}</p>
                     )
                         :
                         null
                     }
-                     {Event.contact_mail ? (
-                        <p><strong>Mail :</strong> {formatDate(Event.contact_mail)}</p>
+                    {Event.contact_mail ? (
+                        <p><strong>Mail :</strong> {Event.contact_mail}</p>
                     )
                         :
                         null

@@ -8,7 +8,7 @@ type Props = {
 export function SeeMoreButton({style, OnClick }: Props) {
     return (
         <div style={{...styles.container, ...style}}> 
-        <button onClick={() => {OnClick()}} style={{...styles.button}}>SEE MORE</button> 
+        <button onClick={() => {OnClick()}} style={{...styles.button}}>Voir Plus</button> 
         </div>
         )
     }
