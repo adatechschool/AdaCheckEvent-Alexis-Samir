@@ -1,0 +1,138 @@
+import {useState} from 'react'
+
+// Components Imports
+import {EventCard} from '../components/EventCard'
+import {SearchBar} from '../components/SearchBar'
+import {ScrollTopButton} from '../components/ScrollTopButton'
+
+// Context Imports
+import {InputValueProvider} from '../context/InputValueContext'
+import {useAPI} from '../context/APIContext'
+import {useFavorites} from '../context/FavoriteContext'
+import {ViewButton} from '../components/ViewButton'
+
+export function Favorites() {
+    const [inputValue, setInputValue] = useState<string>('') // State pour Récupérer la valeur de recherche
+    const {listEvent, loadMoreEvents} = useAPI()
+    const {favorites} = useFavorites()
+    const filteredEvents = listEvent.filter(event => favorites.includes(event.id));
+
+    return (
+        <InputValueProvider value={{inputValue, setInputValue}}>
+            <>
+                <div style={{padding: '16px', maxWidth: '100%'}}>
+                    <h1 data-screen-container style={{color: 'white', textAlign: 'center', margin: '0 0 20px 0', fontSize: '1.8em', fontWeight: '700', textShadow: '2px 2px 4px rgba(0,0,0,0.2)'}}>
+                        Vos Événements Favoris ❤️
+                    </h1>
+                    <div style={{display: 'flex', flexDirection: 'row', gap: '16px'}}>
+                        <ViewButton />
+                        <SearchBar style={{flex: 10}} />
+                    </div>
+                    <div style={{display: 'flex', justifyContent: 'center', gap: '16px', margin: '24px 0', flexWrap: 'wrap'}}>
+                        <button onClick={loadMoreEvents}>➕ Charger plus d'événements</button>
+                    </div>
+                    <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px', margin: '20px auto 0', padding: '0 16px'}}>
+                        { filteredEvents.length === 0 &&
+                            <div style={{
+                                gridColumn: '1 / -1',
+                                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                                backdropFilter: 'blur(10px)',
+                                borderRadius: '16px',
+                                padding: '2rem',
+                                margin: '2rem auto',
+                                maxWidth: '600px',
+                                border: '1px solid rgba(255, 255, 255, 0.2)',
+                                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)'
+                            }}>
+                                <h2 style={{
+                                    color: 'white',
+                                    textAlign: 'center',
+                                    fontSize: '1.5em',
+                                    marginBottom: '1rem',
+                                    fontWeight: '600'
+                                }}>
+                                    📋 Votre liste est vide
+                                </h2>
+                                <p style={{
+                                    color: 'rgba(255, 255, 255, 0.9)',
+                                    textAlign: 'center',
+                                    lineHeight: '1.8',
+                                    fontSize: '1em',
+                                    marginBottom: '1rem'
+                                }}>
+                                    Cette liste regroupe tous les événements que vous avez ajoutés à vos favoris.
+                                </p>
+                                <p style={{
+                                    color: 'rgba(255, 255, 255, 0.85)',
+                                    textAlign: 'center',
+                                    lineHeight: '1.8',
+                                    fontSize: '0.95em',
+                                    marginBottom: '1rem'
+                                }}>
+                                    Certains événements peuvent ne plus s'afficher s'ils ont été supprimés par l'organisateur ou s'ils ne sont plus disponibles. 
+                                    Vous pouvez essayer de charger d'autres événements en appuyant sur le bouton <strong>« Charger plus d'événements »</strong> ci-dessous.
+                                </p>
+                                <p style={{
+                                    color: 'rgba(255, 255, 255, 0.95)',
+                                    textAlign: 'center',
+                                    lineHeight: '1.8',
+                                    fontSize: '1em',
+                                    marginTop: '1.5rem',
+                                    fontWeight: '500'
+                                }}>
+                                    💡 C'est peut-être le moment d'explorer de nouveaux événements et d'ajouter vos coups de cœur en cliquant sur l'icône ❤️ !
+                                </p>
+                            </div>
+                        }
+                        {
+                            filteredEvents.filter((event) => {
+                                if (inputValue) {
+                                    const searchLower = inputValue.toLowerCase().trim();
+
+                                    // Check for "Paris X" or "Paris XX" pattern (can be anywhere in the search)
+                                    const parisDistrictMatch = searchLower.match(/paris\s+(\d{1,2})/);
+                                    let matchesLocation = true; // By default, no location filter
+                                    let remainingSearch = searchLower;
+
+                                    if (parisDistrictMatch) {
+                                        const district = parisDistrictMatch[1].padStart(2, '0');
+                                        const expectedZipcode = `750${district}`;
+                                        matchesLocation = event.address_zipcode === expectedZipcode;
+
+                                        // Remove the "Paris X" part from the search to get remaining keywords
+                                        remainingSearch = searchLower.replace(/paris\s+\d{1,2}/, '').trim();
+                                        console.log('Searching for district:', district, 'Expected zipcode:', expectedZipcode, 'Remaining keywords:', remainingSearch);
+                                    }
+
+                                    // If there are remaining keywords, search in title, description, etc.
+                                    let matchesKeywords = true;
+                                    if (remainingSearch) {
+
+                                        // Split the search into individual words
+                                        const keywords = remainingSearch.split(/\s+/).filter(word => word.length > 0);
+
+                                        // Check if ALL keywords are found in at least one of the fields
+                                        matchesKeywords = keywords.every(keyword => {
+                                            const eventText = `${event.title} ${event.description} ${event.lead_texte} ${event.address_city || ''}`.toLowerCase();
+                                            return eventText.includes(keyword);
+                                        });
+                                    }
+
+                                    // Both conditions must be true
+                                    return matchesLocation && matchesKeywords;
+                                }
+
+                                return true // Afficher tous les événements si pas de recherche
+                            }).map((event) =>
+                                <div key={event.id}>
+                                    <EventCard Event={event} />
+                                </div>
+                            )
+                        }
+                    </div>
+                    <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />
+                </div>
+            </>
+        </InputValueProvider>
+    )
+}
