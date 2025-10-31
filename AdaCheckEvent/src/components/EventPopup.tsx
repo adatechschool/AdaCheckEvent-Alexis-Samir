@@ -1,5 +1,5 @@
 import type {Event} from '../constants/Event';
-import {type CSSProperties} from 'react';
+import {type CSSProperties, useEffect} from 'react';
 import {useFavorites} from '../context/FavoriteContext';
 import FavoriteButton from './FavoriteButton';
 import { ScrollTopButton } from './ScrollTopButton';
@@ -37,6 +37,27 @@ export function EventPopup({Event, style, onClose}: Props) {
 
     // Check if THIS specific event is in favorites
     const isFavorite = favorites.includes(Event.id);
+
+    // Freeze body scroll when popup is open
+    useEffect(() => {
+        // Save current scroll position
+        const scrollY = window.scrollY;
+        
+        // Prevent body scroll
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${scrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+
+        // Cleanup: restore scroll when popup closes
+        return () => {
+            document.body.style.position = '';
+            document.body.style.top = '';
+            document.body.style.width = '';
+            document.body.style.overflow = '';
+            window.scrollTo(0, scrollY);
+        };
+    }, []);
 
     return (
         <>

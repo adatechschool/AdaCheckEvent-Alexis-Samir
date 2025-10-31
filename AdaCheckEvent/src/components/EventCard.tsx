@@ -7,10 +7,11 @@ import FavoriteButton from "./FavoriteButton";
 
 type Props = {
     Event: Event,
-    style?: CSSProperties
+    style?: CSSProperties,
+    onPopupChange?: (isOpen: boolean) => void
 }
 
-export function EventCard({ Event, style, }: Props) {
+export function EventCard({ Event, style, onPopupChange }: Props) {
     const [isEventPopupOpen, setEventPopupOpen] = useState<boolean>(false)
     const { favorites, toggleFavorite } = useFavorites();
 
@@ -18,7 +19,11 @@ export function EventCard({ Event, style, }: Props) {
     const isFavorite = favorites.includes(Event.id);
 
     const ToggleEventPopup = () => {
-        setEventPopupOpen(!isEventPopupOpen);
+        const newState = !isEventPopupOpen;
+        setEventPopupOpen(newState);
+        if (onPopupChange) {
+            onPopupChange(newState);
+        }
     };
 
     return (

@@ -14,6 +14,7 @@ import {ViewButton} from '../components/ViewButton'
 
 export function Home() {
     const [inputValue, setInputValue] = useState<string>('') // State pour Récupérer la valeur de recherche
+    const [isAnyPopupOpen, setIsAnyPopupOpen] = useState<boolean>(false) // Track if any popup is open
     const {listEvent, loadMoreEvents} = useAPI()
 
     return (
@@ -68,7 +69,7 @@ export function Home() {
                                 return true // Afficher tous les événements si pas de recherche
                             }).map((event) =>
                                 <div key={event.id}>
-                                    <EventCard Event={event} />
+                                    <EventCard Event={event} onPopupChange={setIsAnyPopupOpen} />
                                 </div>
                             )
                         }
@@ -76,7 +77,7 @@ export function Home() {
                     <div style={{display: 'flex', justifyContent: 'center', gap: '16px', margin: '24px 0', flexWrap: 'wrap'}}>
                         <button onClick={loadMoreEvents}>➕ Charger plus d'événements</button>
                     </div>
-                    <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />
+                    {!isAnyPopupOpen && <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />}
                 </div>
             </>
         </InputValueProvider>

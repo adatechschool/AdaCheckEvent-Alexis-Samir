@@ -13,6 +13,7 @@ import {ViewButton} from '../components/ViewButton'
 
 export function Favorites() {
     const [inputValue, setInputValue] = useState<string>('') // State pour Récupérer la valeur de recherche
+    const [isAnyPopupOpen, setIsAnyPopupOpen] = useState<boolean>(false) // Track if any popup is open
     const {listEvent, loadMoreEvents} = useAPI()
     const {favorites} = useFavorites()
     const filteredEvents = listEvent.filter(event => favorites.includes(event.id));
@@ -125,12 +126,12 @@ export function Favorites() {
                                 return true // Afficher tous les événements si pas de recherche
                             }).map((event) =>
                                 <div key={event.id}>
-                                    <EventCard Event={event} />
+                                    <EventCard Event={event} onPopupChange={setIsAnyPopupOpen} />
                                 </div>
                             )
                         }
                     </div>
-                    <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />
+                    {!isAnyPopupOpen && <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />}
                 </div>
             </>
         </InputValueProvider>
