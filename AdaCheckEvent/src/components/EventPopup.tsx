@@ -2,6 +2,7 @@ import type {Event} from '../constants/Event';
 import {type CSSProperties} from 'react';
 import {useFavorites} from '../context/FavoriteContext';
 import FavoriteButton from './FavoriteButton';
+import { ScrollTopButton } from './ScrollTopButton';
 
 // Fonction utilitaire pour nettoyer le HTML (optionnel, pour plus de sécurité)
 const sanitizeHtml = (html: string): string => {
@@ -36,14 +37,6 @@ export function EventPopup({Event, style, onClose}: Props) {
 
     // Check if THIS specific event is in favorites
     const isFavorite = favorites.includes(Event.id);
-
-    // Function to scroll to top of the popup
-    const scrollToTop = () => {
-        const popup = document.querySelector('[data-popup-container]') as HTMLElement;
-        if (popup) {
-            popup.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-    };
 
     return (
         <>
@@ -101,7 +94,7 @@ export function EventPopup({Event, style, onClose}: Props) {
                         :
                         null
                     }
-                    <button style={styles.actionButton} onClick={scrollToTop}>⬆️ Retour en haut</button>
+                    <ScrollTopButton ancrage="[data-popup-container]" />
                 </div>
             </div>
         </>

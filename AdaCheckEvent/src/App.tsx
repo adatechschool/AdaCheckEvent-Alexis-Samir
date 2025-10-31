@@ -13,6 +13,7 @@ import {FavoriteProvider} from './context/FavoriteContext'
 
 // Style Imports
 import './App.css'
+import {ScrollTopButton} from './components/ScrollTopButton'
 
 function AppContent() {
   const [inputValue, setInputValue] = useState<string>('') // State pour Récupérer la valeur de recherche
@@ -22,7 +23,7 @@ function AppContent() {
     <InputValueProvider value={{inputValue, setInputValue}}>
       <>
         <div style={{padding: '16px', maxWidth: '100%'}}>
-          <h1 style={{color: 'white', textAlign: 'center', margin: '0 0 20px 0', fontSize: '1.8em', fontWeight: '700', textShadow: '2px 2px 4px rgba(0,0,0,0.2)'}}>
+          <h1 data-screen-container style={{color: 'white', textAlign: 'center', margin: '0 0 20px 0', fontSize: '1.8em', fontWeight: '700', textShadow: '2px 2px 4px rgba(0,0,0,0.2)'}}>
             🗼 Événements à Paris
           </h1>
           <SearchBar />
@@ -75,6 +76,7 @@ function AppContent() {
           <div style={{display: 'flex', justifyContent: 'center', gap: '16px', margin: '24px 0', flexWrap: 'wrap'}}>
             <button onClick={loadMoreEvents}>➕ Charger plus d'événements</button>
           </div>
+          <ScrollTopButton ancrage="window" style={{bottom: '24px'}}/>
         </div>
       </>
     </InputValueProvider>
