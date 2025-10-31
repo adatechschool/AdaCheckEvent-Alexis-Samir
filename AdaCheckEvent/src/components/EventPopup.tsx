@@ -1,5 +1,7 @@
 import type {Event} from '../constants/Event';
 import {type CSSProperties} from 'react';
+import {useFavorites} from '../context/FavoriteContext';
+import FavoriteButton from './FavoriteButton';
 
 // Fonction utilitaire pour nettoyer le HTML (optionnel, pour plus de sécurité)
 const sanitizeHtml = (html: string): string => {
@@ -30,15 +32,28 @@ function formatDate(dateString: string) {
 }
 
 export function EventPopup({Event, style, onClose}: Props) {
+    const { favorites, toggleFavorite } = useFavorites();
+
+    // Check if THIS specific event is in favorites
+    const isFavorite = favorites.includes(Event.id);
+
+    // Function to scroll to top of the popup
+    const scrollToTop = () => {
+        const popup = document.querySelector('[data-popup-container]') as HTMLElement;
+        if (popup) {
+            popup.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 
     return (
         <>
             {console.log("Popup Opened for event: ", Event.title)}
 
             <div style={styles.overlay} onClick={onClose}>
-                <div style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
+                <div data-popup-container style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
+                    <FavoriteButton onClick={() => toggleFavorite(Event)} isFavorite={isFavorite} />
                     <button style={styles.closeButton} onClick={onClose}>✕</button>
-                    <h1>{Event.title}</h1>
+                    <h1 style={{paddingTop: '16px'}}>{Event.title}</h1>
                     <img src={Event.cover_url} alt={Event.cover_alt || Event.title} style={styles.image} />
                     <div
                         style={styles.description}
@@ -86,7 +101,7 @@ export function EventPopup({Event, style, onClose}: Props) {
                         :
                         null
                     }
-                    <button style={styles.actionButton} onClick={onClose}>Fermer</button>
+                    <button style={styles.actionButton} onClick={scrollToTop}>⬆️ Retour en haut</button>
                 </div>
             </div>
         </>

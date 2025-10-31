@@ -9,6 +9,7 @@ import {SearchBar} from './components/SearchBar'
 // Context Imports
 import {InputValueProvider} from './context/InputValueContext'
 import {APIProvider, useAPI} from './context/APIContext'
+import {FavoriteProvider} from './context/FavoriteContext'
 
 // Style Imports
 import './App.css'
@@ -66,7 +67,7 @@ function AppContent() {
                 return true // Afficher tous les événements si pas de recherche
               }).map((event) =>
                 <div key={event.id}>
-                  <EventCard ObjetEvent={event} />
+                  <EventCard Event={event} />
                 </div>
               )
             }
@@ -83,7 +84,9 @@ function AppContent() {
 function App() {
   return (
     <APIProvider>
-      <AppContent />
+      <FavoriteProvider>
+        <AppContent />
+      </FavoriteProvider>
     </APIProvider>
   )
 }

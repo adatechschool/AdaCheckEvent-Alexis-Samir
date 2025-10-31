@@ -2,14 +2,20 @@ import { type CSSProperties, useState } from "react";
 import type { Event } from "../constants/Event";
 import { SeeMoreButton } from "./SeeMoreButton";
 import { EventPopup } from "./EventPopup";
+import { useFavorites } from "../context/FavoriteContext";
+import FavoriteButton from "./FavoriteButton";
 
 type Props = {
-    ObjetEvent: Event,
+    Event: Event,
     style?: CSSProperties
 }
 
-export function EventCard({ ObjetEvent, style, }: Props) {
+export function EventCard({ Event, style, }: Props) {
     const [isEventPopupOpen, setEventPopupOpen] = useState<boolean>(false)
+    const { favorites, toggleFavorite } = useFavorites();
+
+    // Check if THIS specific event is in favorites
+    const isFavorite = favorites.includes(Event.id);
 
     const ToggleEventPopup = () => {
         setEventPopupOpen(!isEventPopupOpen);
@@ -17,14 +23,15 @@ export function EventCard({ ObjetEvent, style, }: Props) {
 
     return (
         <div style={{ ...styles.container, ...style }}>
-            <img src={ObjetEvent.cover_url} alt={ObjetEvent.cover_alt} style={styles.image} />
+            <FavoriteButton onClick={() => toggleFavorite(Event)} isFavorite={isFavorite} />
+            <img src={Event.cover_url} alt={Event.cover_alt} style={styles.image} />
             <div style={styles.informations}>
-                <h2 style={styles.title}>{ObjetEvent.title}</h2>
-                <p style={styles.description}>{ObjetEvent.lead_texte}</p>
+                <h2 style={styles.title}>{Event.title}</h2>
+                <p style={styles.description}>{Event.lead_texte}</p>
                 <SeeMoreButton OnClick={ToggleEventPopup} />
             </div>
             {isEventPopupOpen ? (
-                <EventPopup Event={ObjetEvent} onClose={ToggleEventPopup} />
+                <EventPopup Event={Event} onClose={ToggleEventPopup} />
             )
                 :
                 null
@@ -38,6 +45,7 @@ const styles = {
         display: 'flex',
         flex: 1,
         flexDirection: "column",
+        position: 'relative' as 'relative',
         border: "none",
         borderRadius: "16px",
         padding: "0",
