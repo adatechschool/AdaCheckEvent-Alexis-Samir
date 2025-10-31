@@ -11,6 +11,9 @@ import {useAPI} from '../context/APIContext'
 import {useFavorites} from '../context/FavoriteContext'
 import {ViewButton} from '../components/ViewButton'
 
+// Utils
+import {normalizeText} from '../utils/normalizeText'
+
 export function Favorites() {
     const [inputValue, setInputValue] = useState<string>('') // State pour Récupérer la valeur de recherche
     const [isAnyPopupOpen, setIsAnyPopupOpen] = useState<boolean>(false) // Track if any popup is open
@@ -88,7 +91,7 @@ export function Favorites() {
                         {
                             filteredEvents.filter((event) => {
                                 if (inputValue) {
-                                    const searchLower = inputValue.toLowerCase().trim();
+                                    const searchLower = normalizeText(inputValue);
 
                                     // Check for "Paris X" or "Paris XX" pattern (can be anywhere in the search)
                                     const parisDistrictMatch = searchLower.match(/paris\s+(\d{1,2})/);
@@ -114,7 +117,7 @@ export function Favorites() {
 
                                         // Check if ALL keywords are found in at least one of the fields
                                         matchesKeywords = keywords.every(keyword => {
-                                            const eventText = `${event.title} ${event.description} ${event.lead_texte} ${event.address_city || ''}`.toLowerCase();
+                                            const eventText = normalizeText(`${event.title} ${event.description} ${event.lead_texte} ${event.address_city || ''}`);
                                             return eventText.includes(keyword);
                                         });
                                     }

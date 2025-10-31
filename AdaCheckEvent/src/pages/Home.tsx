@@ -10,6 +10,9 @@ import {InputValueProvider} from '../context/InputValueContext'
 import {useAPI} from '../context/APIContext'
 import {ViewButton} from '../components/ViewButton'
 
+// Utils
+import {normalizeText} from '../utils/normalizeText'
+
 
 
 export function Home() {
@@ -32,7 +35,7 @@ export function Home() {
                         {
                             listEvent.filter((event) => {
                                 if (inputValue) {
-                                    const searchLower = inputValue.toLowerCase().trim();
+                                    const searchLower = normalizeText(inputValue);
 
                                     // Check for "Paris X" or "Paris XX" pattern (can be anywhere in the search)
                                     const parisDistrictMatch = searchLower.match(/paris\s+(\d{1,2})/);
@@ -58,7 +61,7 @@ export function Home() {
 
                                         // Check if ALL keywords are found in at least one of the fields
                                         matchesKeywords = keywords.every(keyword => {
-                                            const eventText = `${event.title} ${event.description} ${event.lead_texte} ${event.address_city || ''}`.toLowerCase();
+                                            const eventText = normalizeText(`${event.title} ${event.description} ${event.lead_texte} ${event.address_city || ''}`);
                                             return eventText.includes(keyword);
                                         });
                                     }
