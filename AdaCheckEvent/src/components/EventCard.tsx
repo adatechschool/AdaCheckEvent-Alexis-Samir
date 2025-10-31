@@ -93,6 +93,12 @@ const styles = {
         fontSize: '1.2em',
         margin: '0',
         fontWeight: '700',
-        color: '#222'
+        color: '#222',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        maxHeight: '80px',
     } as CSSProperties,
 } 
