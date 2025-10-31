@@ -1,6 +1,6 @@
 import {createContext, useContext, useState, useEffect} from "react"
 import type {ReactNode} from "react"
-import type { Event, APIResponse } from "../constants/Event"
+import type {Event, APIResponse} from "../constants/Event"
 
 type APIContextType = {
     listEvent: Event[],
@@ -16,7 +16,7 @@ type APIProviderProps = {
     children: ReactNode
 }
 
-export function APIProvider({ children }: APIProviderProps) {
+export function APIProvider({children}: APIProviderProps) {
     const [listEvent, setListEvent] = useState<Event[]>([])
     const [offset, setOffset] = useState<number>(0)
 
@@ -31,22 +31,31 @@ export function APIProvider({ children }: APIProviderProps) {
                 title: event.title,
                 description: event.description,
                 lead_texte: event.lead_text,
+                qfap_tags: event.qfap_tags ? event.qfap_tags.split(';') : null,
                 cover_url: event.cover_url ? event.cover_url.split('?')[0] : event.cover_url,
                 cover_alt: event.cover_alt,
                 date_start: event.date_start,
                 date_end: event.date_end,
+                date_description: event.date_description || null,
                 address_name: event.address_name,
                 address_street: event.address_street,
                 address_zipcode: event.address_zipcode,
                 address_city: event.address_city,
                 text: event.locations?.[0]?.text || null,
                 lat_lon: event.lat_lon ? [event.lat_lon.lat, event.lat_lon.lon] : [null, null],
+                price_type: event.price_type || null,
+                price_detail: event.price_detail || null,
                 contact_url: event.contact_url || null,
                 contact_phone: event.contact_phone || null,
                 contact_mail: event.contact_mail,
                 access_link: event.access_link,
                 access_link_text: event.access_link_text,
-                url: event.url
+                url: event.url,
+                blind: (event.locations?.[0]?.accessibility?.blind ? (event.locations[0].accessibility.blind === 1 ? true : false) : null),
+                pmr: (event.locations?.[0]?.accessibility?.pmr ? (event.locations[0].accessibility.pmr === 1 ? true : false) : null),
+                deaf: (event.locations?.[0]?.accessibility?.deaf ? (event.locations[0].accessibility.deaf === 1 ? true : false) : null),
+                sign_language: (event.locations?.[0]?.accessibility?.sign_language ? (event.locations[0].accessibility.sign_language === 1 ? true : false) : null),
+                mental: (event.locations?.[0]?.accessibility?.mental ? (event.locations[0].accessibility.mental === 1 ? true : false) : null),
             }));
 
             // Filter out events that already exist (to prevent duplicates)
@@ -68,7 +77,7 @@ export function APIProvider({ children }: APIProviderProps) {
     }, [])
 
     return (
-        <APIContext.Provider value={{ listEvent, setListEvent, offset, setOffset, loadMoreEvents }}>
+        <APIContext.Provider value={{listEvent, setListEvent, offset, setOffset, loadMoreEvents}}>
             {children}
         </APIContext.Provider>
     )

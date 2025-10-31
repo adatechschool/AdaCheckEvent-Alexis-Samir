@@ -1,37 +1,50 @@
 export type Event = {
-    // identifiant unique de l'événement
-    id : string; 
+  // identifiant unique de l'événement
+  id: string;
 
-    // titre et description
-    title: string; // Nom de l'événement
-    description: string; // Description de l'événement
-    lead_texte : string; // Petite description
+  // titre et description
+  title: string; // Nom de l'événement
+  description: string; // Description de l'événement
+  lead_texte: string; // Petite description
+  qfap_tags?: string[] | null; // Tags QFAP associés à l'événement
 
-    // image de l'événement
-    cover_url: string; // URL de l'image de couverture de l'événement
-    cover_alt: string; // Texte alternatif pour l'image de couverture
-    
-    // dates
-    date_start: string | null; // Date de début de l'événement
-    date_end: string | null; // Date de fin de l'événement
+  // image de l'événement
+  cover_url: string; // URL de l'image de couverture de l'événement
+  cover_alt: string; // Texte alternatif pour l'image de couverture
 
-    // lieu et coordonnées
-    address_name: string | null; // Nom du lieu de l'événement
-    address_street: string | null; // Lieu de l'événement
-    address_zipcode: string | null; // Code postal du lieu de l'événement
-    address_city: string | null; // Ville du lieu de l'événement
-           text: string | null;  // Dans le cas où l'adresse n'est pas indiquée 
-    lat_lon: [number | null, number | null] | null; // Coordonnées géographiques de l'événement
+  // dates
+  date_start: string | null; // Date de début de l'événement
+  date_end: string | null; // Date de fin de l'événement
+  date_description?: string | null; // Description des dates (ex: "Tous les jours de 10h à 18h")
 
-    // contact et accès
-    contact_url: string | null; // URL de contact pour l'événement
-    contact_phone: string | null; // Numéro de téléphone de contact pour l'événement
-    contact_mail: string | null; // Adresse e-mail de contact pour l'événement
+  // lieu et coordonnées
+  address_name: string | null; // Nom du lieu de l'événement
+  address_street: string | null; // Lieu de l'événement
+  address_zipcode: string | null; // Code postal du lieu de l'événement
+  address_city: string | null; // Ville du lieu de l'événement
+  text: string | null;  // Dans le cas où l'adresse n'est pas indiquée 
+  lat_lon: [number | null, number | null] | null; // Coordonnées géographiques de l'événement
 
-    // lien d'accès
-    access_link: string; // Lien d'accès à l'événement pour reservation ou informations
-    access_link_text: string; // Texte du lien d'accès à l'événement
-    url: string; // lien URL de l'événement sur le site de Paris
+  // contact et accès
+  contact_url: string | null; // URL de contact pour l'événement
+  contact_phone: string | null; // Numéro de téléphone de contact pour l'événement
+  contact_mail: string | null; // Adresse e-mail de contact pour l'événement
+
+  // lien d'accès
+  access_link: string; // Lien d'accès à l'événement pour reservation ou informations
+  access_link_text: string; // Texte du lien d'accès à l'événement
+  url: string; // lien URL de l'événement sur le site de Paris
+
+  // Accessibilité
+  blind: boolean | null;
+  pmr: boolean | null;
+  deaf: boolean | null;
+  sign_language: boolean | null;
+  mental: boolean | null;
+
+  // Prix
+  price_type: number | null;
+  price_detail: string | null;
 }
 
 export type APIResponse = {
