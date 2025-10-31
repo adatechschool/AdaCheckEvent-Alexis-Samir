@@ -134,7 +134,7 @@ export function Favorites() {
                             )
                         }
                     </div>
-                    {!isAnyPopupOpen && <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />}
+                    {!isAnyPopupOpen && <ScrollTopButton ancrage="window" />}
                 </div>
             </>
         </InputValueProvider>

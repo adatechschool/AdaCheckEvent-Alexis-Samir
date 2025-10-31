@@ -80,7 +80,7 @@ export function Home() {
                     <div style={{display: 'flex', justifyContent: 'center', gap: '16px', margin: '24px 0', flexWrap: 'wrap'}}>
                         <button onClick={loadMoreEvents}>➕ Charger plus d'événements</button>
                     </div>
-                    {!isAnyPopupOpen && <ScrollTopButton ancrage="window" style={{bottom: '24px'}} />}
+                    {!isAnyPopupOpen && <ScrollTopButton ancrage="window" />}
                 </div>
             </>
         </InputValueProvider>

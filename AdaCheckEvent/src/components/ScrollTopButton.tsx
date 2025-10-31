@@ -28,8 +28,8 @@ export function ScrollTopButton({ancrage, style}: Props) {
 const styles = {
     actionButton: {
         position: 'sticky' as 'sticky',
-        bottom: '2px',
-        right: '24px',
+        bottom: '12px', 
+        right: '12px',
         marginLeft: 'auto',
         padding: '12px 16px',
         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
