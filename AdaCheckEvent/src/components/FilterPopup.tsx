@@ -1,4 +1,4 @@
-import { type CSSProperties, useState } from 'react';
+import { type CSSProperties, useState, useEffect } from 'react';
 
 export type SortOption = 'date-asc' | 'date-desc' | 'none';
 
@@ -30,6 +30,26 @@ const PARIS_DISTRICTS = [
 
 export function FilterPopup({ onClose, onApply, currentFilters, availableCategories }: Props) {
     const [filters, setFilters] = useState<FilterOptions>(currentFilters);
+
+    useEffect(() => {
+            // Save current scroll position
+            const scrollY = window.scrollY;
+            
+            // Prevent body scroll
+            document.body.style.position = 'fixed';
+            document.body.style.top = `-${scrollY}px`;
+            document.body.style.width = '100%';
+            document.body.style.overflow = 'hidden';
+    
+            // Cleanup: restore scroll when popup closes
+            return () => {
+                document.body.style.position = '';
+                document.body.style.top = '';
+                document.body.style.width = '';
+                document.body.style.overflow = '';
+                window.scrollTo(0, scrollY);
+            };
+        }, []);
 
     const handleReset = () => {
         const resetFilters: FilterOptions = {
@@ -371,11 +391,9 @@ const styles = {
         height: '16px',
     } as CSSProperties,
     categoryGrid: {
-        display: 'flex',
-        flexDirection: 'column' as 'column',
-        gap: '10px',
-        maxHeight: '200px',
-        overflowY: 'auto' as 'auto',
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+        gap: '12px',
     } as CSSProperties,
     categoryLabel: {
         display: 'flex',
