@@ -30,7 +30,7 @@ const styles = {
     borderRadius: '16px',
     backgroundColor: 'rgba(255, 255, 255, 0.95)',
     boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-    maxWidth: '100%',
+    maxWidth: window.innerWidth > 425 ? '90vw' : '55vw',
     margin: '0 auto'
   } as CSSProperties,
   inputSections: {
@@ -39,6 +39,7 @@ const styles = {
     padding: '8px',
     flex: 1,
     height: '32px',
+    maxWidth: window.innerWidth > 425 ? '100%' : '80%',
     fontSize: '16px',
     backgroundColor: 'transparent',
     outline: 'none',

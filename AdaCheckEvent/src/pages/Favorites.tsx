@@ -22,7 +22,7 @@ export function Favorites() {
     const [isFilterPopupOpen, setIsFilterPopupOpen] = useState<boolean>(false) // Track filter popup
     const {listEvent, loadMoreEvents} = useAPI()
     const {favorites} = useFavorites()
-    
+
     // Get only favorite events
     const favoriteEvents = listEvent.filter(event => favorites.includes(event.id));
 
@@ -53,8 +53,8 @@ export function Favorites() {
                     <div style={{display: 'flex', flexDirection: 'row', gap: '16px'}}>
                         <ViewButton />
                         <SearchBar style={{flex: 10}} />
-                        <FilterButton 
-                            onClick={() => setIsFilterPopupOpen(true)} 
+                        <FilterButton
+                            onClick={() => setIsFilterPopupOpen(true)}
                             activeFiltersCount={activeFiltersCount}
                         />
                     </div>
@@ -62,7 +62,7 @@ export function Favorites() {
                         <button onClick={loadMoreEvents}>➕ Charger plus d'événements</button>
                     </div>
                     <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px', marginTop: '20px', margin: '20px auto 0', padding: '0 16px'}}>
-                        { filteredEvents.length === 0 &&
+                        {filteredEvents.length === 0 &&
                             <div style={{
                                 gridColumn: '1 / -1',
                                 backgroundColor: 'rgba(255, 255, 255, 0.1)',
@@ -99,7 +99,7 @@ export function Favorites() {
                                     fontSize: '0.95em',
                                     marginBottom: '1rem'
                                 }}>
-                                    Certains événements peuvent ne plus s'afficher s'ils ont été supprimés par l'organisateur ou s'ils ne sont plus disponibles. 
+                                    Certains événements peuvent ne plus s'afficher s'ils ont été supprimés par l'organisateur ou s'ils ne sont plus disponibles.
                                     Vous pouvez essayer de charger d'autres événements en appuyant sur le bouton <strong>« Charger plus d'événements »</strong> ci-dessous.
                                 </p>
                                 <p style={{

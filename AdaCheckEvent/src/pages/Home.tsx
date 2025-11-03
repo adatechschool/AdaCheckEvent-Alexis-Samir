@@ -49,8 +49,8 @@ export function Home() {
                     </h1>
                     <div style={{display: 'flex', flexDirection: 'row', gap: '16px'}}>
                         <SearchBar style={{flex: 10}} />
-                        <FilterButton 
-                            onClick={() => setIsFilterPopupOpen(true)} 
+                        <FilterButton
+                            onClick={() => setIsFilterPopupOpen(true)}
                             activeFiltersCount={activeFiltersCount}
                         />
                         <ViewButton />
