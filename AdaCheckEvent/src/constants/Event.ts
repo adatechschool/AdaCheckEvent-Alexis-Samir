@@ -43,7 +43,7 @@ export type Event = {
   mental: boolean | null;
 
   // Prix
-  price_type: number | null;
+  price_type: string | null;
   price_detail: string | null;
 }
 
