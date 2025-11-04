@@ -116,8 +116,8 @@ export function EventPopup({Event, style, onClose}: Props) {
                                 {Event.address_name && <p style={styles.infoLine}><strong>{Event.address_name}</strong></p>}
                                 <p style={styles.infoLine}>
                                     {Event.address_street && `${Event.address_street}`}
-                                    {Event.address_zipcode && `, ${Event.address_zipcode}`}
-                                    {Event.address_city && ` ${Event.address_city}`}
+                                    {Event.address_city && `, ${Event.address_city}`}
+                                    {Event.address_zipcode && ` ${Event.address_zipcode}`}
                                 </p>
                             </>
                         ) : Event.text ? (
