@@ -91,7 +91,7 @@ export function useEventFilters(events: Event[], searchValue: string) {
         
         if (accessibilityFilters.length > 0) {
             result = result.filter(event => 
-                accessibilityFilters.some(key => event[key as keyof Event])
+                accessibilityFilters.every(key => event[key as keyof Event])
             );
         }
 
