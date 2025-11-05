@@ -2,7 +2,7 @@ import type {Event} from '../constants/Event';
 import {type CSSProperties, useEffect} from 'react';
 import {useFavorites} from '../context/FavoriteContext';
 import FavoriteButton from './FavoriteButton';
-import { ScrollTopButton } from './ScrollTopButton';
+import {ScrollTopButton} from './ScrollTopButton';
 
 // Fonction utilitaire pour nettoyer le HTML (optionnel, pour plus de sécurité)
 const sanitizeHtml = (html: string): string => {
@@ -33,7 +33,7 @@ function formatDate(dateString: string) {
 }
 
 export function EventPopup({Event, style, onClose}: Props) {
-    const { favorites, toggleFavorite } = useFavorites();
+    const {favorites, toggleFavorite} = useFavorites();
 
     // Check if THIS specific event is in favorites
     const isFavorite = favorites.includes(Event.id);
@@ -42,7 +42,7 @@ export function EventPopup({Event, style, onClose}: Props) {
     useEffect(() => {
         // Save current scroll position
         const scrollY = window.scrollY;
-        
+
         // Prevent body scroll
         document.body.style.position = 'fixed';
         document.body.style.top = `-${scrollY}px`;
@@ -67,46 +67,48 @@ export function EventPopup({Event, style, onClose}: Props) {
                 <div data-popup-container style={{...styles.container, ...style}} onClick={(e) => e.stopPropagation()}>
                     <FavoriteButton onClick={() => toggleFavorite(Event)} isFavorite={isFavorite} />
                     <button style={styles.closeButton} onClick={onClose}>ⓧ</button>
-                    
+
                     {/* Title */}
                     <h1 style={styles.title}>{Event.title}</h1>
-                    
+
                     {/* Cover Image */}
                     <img src={Event.cover_url} alt={Event.cover_alt || Event.title} style={styles.image} />
-                    
+
                     {/* Tags */}
                     {Event.qfap_tags ? (
                         Event.qfap_tags.length > 0 && (
-                        <div style={styles.tagsContainer}>
-                            {Event.qfap_tags.map((tag, index) => (
-                                <span key={index} style={styles.tag}>{tag}</span>
-                            ))}
-                        </div>
-                    )) : null}
-                    
+                            <div style={styles.tagsContainer}>
+                                {Event.qfap_tags.map((tag, index) => (
+                                    <span key={index} style={styles.tag}>{tag}</span>
+                                ))}
+                            </div>
+                        )) : null}
+
                     {/* Description */}
                     <div
                         style={styles.description}
                         dangerouslySetInnerHTML={{__html: sanitizeHtml(Event.description)}}
                     />
-                    
+
                     {/* Dates Section */}
-                    <div style={styles.section}>
-                        <h2 style={styles.sectionTitle}>📅 Dates et Horaires</h2>
-                        {Event.date_start && (
-                            <p style={styles.infoLine}>
-                                <strong>Début :</strong> {formatDate(Event.date_start)}
-                            </p>
-                        )}
-                        {Event.date_end && (
-                            <p style={styles.infoLine}>
-                                <strong>Fin :</strong> {formatDate(Event.date_end)}
-                            </p>
-                        )}
-                        {Event.date_description && (
-                            <p style={styles.infoLine} dangerouslySetInnerHTML={{__html: sanitizeHtml(Event.date_description)}}></p>
-                        )}
-                    </div>
+                    {(Event.date_start || Event.date_end || Event.date_description) && (
+                        <div style={styles.section}>
+                            <h2 style={styles.sectionTitle}>📅 Dates et Horaires</h2>
+                            {Event.date_start && (
+                                <p style={styles.infoLine}>
+                                    <strong>Début :</strong> {formatDate(Event.date_start)}
+                                </p>
+                            )}
+                            {Event.date_end && (
+                                <p style={styles.infoLine}>
+                                    <strong>Fin :</strong> {formatDate(Event.date_end)}
+                                </p>
+                            )}
+                            {Event.date_description && (
+                                <p style={styles.infoLine} dangerouslySetInnerHTML={{__html: sanitizeHtml(Event.date_description)}}></p>
+                            )}
+                        </div>
+                    )}
 
                     {/* Location Section */}
                     <div style={styles.section}>
